@@ -24,7 +24,7 @@ function HomePage() {
 
           <div className='picture'>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, nulla! Fuga mollitia commodi consectetur aliquam nesciunt, provident non, iste eaque et deleniti, ea in omnis consequuntur fugiat vel aspernatur nam.
-          {/* <img src={Pic}/> */}
+          {/* <img src={Pic}/> some pic*/}
           </div>
       </div>
     );
