@@ -13,7 +13,7 @@ function HomePage() {
     return (
       <div className="container">
           <div className="box">
-            <header className="safeeats">SafeEats</header>
+            <header className="safeeats">GoodEats</header>
             <div>
               <div className="subtext">Scan food to get started</div>
             </div>
