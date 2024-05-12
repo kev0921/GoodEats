@@ -13,9 +13,9 @@ function HomePage() {
     return (
       <div className="container">
           <div className="box">
-            <text className="safeeats">SafeEats</text>
+            <header className="safeeats">SafeEats</header>
             <div>
-              <text className="subtext">Scan food to get started</text>
+              <div className="subtext">Scan food to get started</div>
             </div>
             <button type="link" onClick={handleOnSubmit}>
               Click to get started
