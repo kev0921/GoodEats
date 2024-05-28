@@ -10,11 +10,14 @@ import "./ScanPage.css";
 // e.g. import { drawRect } from "./utilities";
 // import { drawRect } from "./utilities";
 import { drawRect } from "../utilities/drawRect";
+import { flexbox } from "@chakra-ui/react";
 
 function ScanPage() {
   console.log('ScanPage is rendering')
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const [detectedImage, setDetectedImage] = useState(null); // Add this line
+
 
   let intervalId; // Declare intervalId at the top level of your component
 
@@ -64,10 +67,11 @@ function ScanPage() {
 
         // 5. TODO - Update drawing utility
         // drawSomething(obj, ctx)
-        const detectedClass = drawRect(obj, ctx);
+        const [detectedClass, detectedImage] = drawRect(obj, ctx, video); // Pass video to drawRect and destructure the return value
         if (detectedClass === 'cell phone') {
           clearInterval(intervalId);
-        } 
+          setDetectedImage(detectedImage.toDataURL()); // Convert the canvas to a data URL and save it in state
+        }
       }
     } catch (error) {
       console.error("Error in detect function: ", error);
@@ -86,6 +90,7 @@ function ScanPage() {
             position: "absolute",
             marginLeft: "auto",
             marginRight: "auto",
+            marginTop: "0%",
             left: 0,
             right: 0,
             textAlign: "center",
@@ -101,6 +106,7 @@ function ScanPage() {
             position: "absolute",
             marginLeft: "auto",
             marginRight: "auto",
+            marginTop: "0%",
             left: 0,
             right: 0,
             textAlign: "center",
@@ -109,6 +115,20 @@ function ScanPage() {
             height: 480,
           }}
         />
+
+      {detectedImage && <img src={detectedImage} alt="Detected object" 
+        style={{
+          position: "absolute",
+          display: flexbox,
+          zIndex: 10,
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginTop: "60%",
+          marginBottom: "0%",
+          paddingTop: "0%",
+          paddingLeft: "auto",
+          paddingRight: "auto",
+          }}/>} {/* Display the image when it's available */}
       </header>
     </div>
   );

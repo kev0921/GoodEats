@@ -1,4 +1,4 @@
-export const drawRect = (detections, ctx) => {
+export const drawRect = (detections, ctx, video) => { // Add video as a parameter
   // Loop through each prediction
   for (let prediction of detections) {
 
@@ -20,7 +20,14 @@ export const drawRect = (detections, ctx) => {
 
     if (prediction.class == 'cell phone') {
       console.log('cell phone detected')
-      return prediction.class;
+      
+      // Capture the current rectangle in the frame as an image
+      const image = document.createElement('canvas');
+      image.width = width;
+      image.height = height;
+      image.getContext('2d').drawImage(video, x, y, width, height, 0, 0, width, height);
+      return [prediction.class, image]; // Return both the class and the image
     }
   }
+  return [null, null]; // Return null values if no cell phone is detected
 }
