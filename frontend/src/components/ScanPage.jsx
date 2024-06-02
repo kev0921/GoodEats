@@ -70,7 +70,23 @@ function ScanPage() {
         const [detectedClass, detectedImage] = drawRect(obj, ctx, video); // Pass video to drawRect and destructure the return value
         if (detectedClass === 'cell phone') {
           clearInterval(intervalId);
-          setDetectedImage(detectedImage.toDataURL()); // Convert the canvas to a data URL and save it in state
+          const dataUrl = detectedImage.toDataURL();
+          setDetectedImage(dataUrl); // Convert the canvas to a data URL and save it in state
+          // Send an http request to the python backend
+          fetch('http://localhost:5000/predict/apple', { // Replace with your backend URL
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ image: dataUrl }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success:', data);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
         }
       }
     } catch (error) {
