@@ -68,12 +68,12 @@ function ScanPage() {
         // 5. TODO - Update drawing utility
         // drawSomething(obj, ctx)
         const [detectedClass, detectedImage] = drawRect(obj, ctx, video); // Pass video to drawRect and destructure the return value
-        if (detectedClass === 'cell phone') {
+        if (detectedClass === 'peach' || detectedClass === 'pomegranate' || detectedClass === 'strawberry') {
           clearInterval(intervalId);
           const dataUrl = detectedImage.toDataURL();
           setDetectedImage(dataUrl); // Convert the canvas to a data URL and save it in state
           // Send an http request to the python backend
-          fetch('http://localhost:5000/predict/apple', { // Replace with your backend URL
+          fetch('http://localhost:5000/predict/'.concat(detectedClass), { // Replace with your backend URL
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ function ScanPage() {
           .catch((error) => {
             console.error('Error:', error);
           });
-        }
+        } 
       }
     } catch (error) {
       console.error("Error in detect function: ", error);

@@ -32,8 +32,8 @@ model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 model.add(Flatten())
-model.add(Dense(64, activation='relu'))
-model.add(Dense(6, activation='softmax'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(2, activation='softmax'))
 
 print(model.summary())
 
@@ -66,7 +66,7 @@ steps_per_epoch = train_generator.samples // BatchSize
 validation_steps = test_generator.samples // BatchSize
 
 # Early stopping
-early_stopping = EarlyStopping(monitor='val_accuracy', patience=5)
+# early_stopping = EarlyStopping(monitor='val_accuracy', patience=5)
 
 # training the model
 history = model.fit(train_generator,
@@ -80,4 +80,4 @@ model.save("cnn_model.h5")
 # Evaluate the model on the test data
 test_loss, test_acc = model.evaluate(test_generator, steps=validation_steps)
 
-print(f'Test accuracy: {test_acc}')
+print(f'Test accuracy: {test_acc}')   # current test_acc: 0.83203125

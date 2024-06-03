@@ -11,18 +11,27 @@ CORS(app)
 # model_path = os.path.join(os.path.dirname(__file__), 'cnn', 'model.h5')
 # model = tf.keras.models.load_model(model_path)
 
-@app.route('/predict/apple', methods=['POST'])
+@app.route('/predict/peach', methods=['POST'])
 def apple_predict():
-    print("Analyzing apple")
+    print("Analyzing peach")
     if (request.files['image']):
         image = request.files['image']
         result = get_prediction(image)
         print('Model classification: ' + result)
         return jsonify({"result": result})
 
-@app.route('/predict/banana', methods=['POST'])
+@app.route('/predict/pomegranate', methods=['POST'])
 def banana_predict():
-    print("Analyzing banana")
+    print("Analyzing pomegranate")
+    if (request.files['image']):
+        image = request.files['image']
+        result = get_prediction(image)
+        print('Model classification: ' + result)
+        return jsonify({"result": result})
+    
+@app.route('/predict/strawberry', methods=['POST'])
+def banana_predict():
+    print("Analyzing strawberry")
     if (request.files['image']):
         image = request.files['image']
         result = get_prediction(image)
