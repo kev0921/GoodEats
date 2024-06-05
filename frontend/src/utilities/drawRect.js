@@ -18,8 +18,8 @@ export const drawRect = (detections, ctx, video) => { // Add video as a paramete
     ctx.rect(x, y, width, height); 
     ctx.stroke();
 
-    if (prediction.class == 'cell phone') {
-      console.log('cell phone detected')
+    if (prediction.class == 'apple' || prediction.class == 'banana' || prediction.class == 'peach' || prediction.class == 'pomegranate' || prediction.class == 'strawberry' || prediction.class == 'orange') {
+      console.log('fruit detected')
       
       // Capture the current rectangle in the frame as an image
       const image = document.createElement('canvas');

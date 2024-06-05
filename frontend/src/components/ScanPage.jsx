@@ -68,19 +68,27 @@ function ScanPage() {
         // 5. TODO - Update drawing utility
         // drawSomething(obj, ctx)
         const [detectedClass, detectedImage] = drawRect(obj, ctx, video); // Pass video to drawRect and destructure the return value
-        if (detectedClass === 'peach' || detectedClass === 'pomegranate' || detectedClass === 'strawberry') {
+        if (detectedClass === 'peach' || detectedClass === 'pomegranate' || detectedClass === 'strawberry' || detectedClass === 'apple' || detectedClass === 'banana' || detectedClass === 'orange') {
           clearInterval(intervalId);
           const dataUrl = detectedImage.toDataURL();
           setDetectedImage(dataUrl); // Convert the canvas to a data URL and save it in state
           // Send an http request to the python backend
-          fetch('http://localhost:5000/predict/'.concat(detectedClass), { // Replace with your backend URL
+          const fruit = detectedClass;
+          let blob = await fetch(dataUrl).then(r => r.blob());
+
+          let formData = new FormData();
+          formData.append("image", blob);
+
+          fetch(`http://127.0.0.1:5000/predict/${fruit}`, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ image: dataUrl }),
+            body: formData
           })
-          .then(response => response.json())
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
           .then(data => {
             console.log('Success:', data);
           })
