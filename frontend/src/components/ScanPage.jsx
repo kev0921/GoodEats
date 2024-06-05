@@ -1,14 +1,8 @@
-// Import dependencies
 import React, { useRef, useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
-// 1. TODO - Import required model here
-// e.g. import * as tfmodel from "@tensorflow-models/tfmodel";
 import * as cocossd from "@tensorflow-models/coco-ssd"
 import Webcam from "react-webcam";
 import "./ScanPage.css";
-// 2. TODO - Import drawing utility here
-// e.g. import { drawRect } from "./utilities";
-// import { drawRect } from "./utilities";
 import { drawRect } from "../utilities/drawRect";
 import { flexbox } from "@chakra-ui/react";
 
@@ -16,15 +10,21 @@ function ScanPage() {
   console.log('ScanPage is rendering')
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const [detectedImage, setDetectedImage] = useState(null); // Add this line
+  const [detectedImage, setDetectedImage] = useState(null); 
+  const [responseData, setResponseData] = useState(null); 
 
+  const rescan = () => {
+    setDetectedImage(null);  // Clear the detected image
+    setResponseData(null);  // Clear the response data
+    clearInterval(intervalId);
+    runCoco();  // Restart the object detection
+  };
 
   let intervalId; // Declare intervalId at the top level of your component
 
   // Main function
   const runCoco = async () => {
-    // 3. TODO - Load network 
-    // e.g. const net = await cocossd.load();
+    // Load network 
     const net = await cocossd.load();
 
     console.log("Handpose model loaded.");
@@ -57,29 +57,27 @@ function ScanPage() {
         canvasRef.current.width = videoWidth;
         canvasRef.current.height = videoHeight;
 
-        // 4. TODO - Make Detections
-        // e.g. const obj = await net.detect(video);
+        // Make Detections
         const obj = await net.detect(video);
         console.log(obj);
 
         // Draw mesh
         const ctx = canvasRef.current.getContext("2d");
 
-        // 5. TODO - Update drawing utility
-        // drawSomething(obj, ctx)
+        // Update drawing utility
         const [detectedClass, detectedImage] = drawRect(obj, ctx, video); // Pass video to drawRect and destructure the return value
         if (detectedClass === 'peach' || detectedClass === 'pomegranate' || detectedClass === 'strawberry' || detectedClass === 'apple' || detectedClass === 'banana' || detectedClass === 'orange') {
-          clearInterval(intervalId);
-          const dataUrl = detectedImage.toDataURL();
+          clearInterval(intervalId);  // Stops the interval running the object detection
+          const dataUrl = detectedImage.toDataURL();  // Converts the image of the detected fruit to a data URL
           setDetectedImage(dataUrl); // Convert the canvas to a data URL and save it in state
           // Send an http request to the python backend
           const fruit = detectedClass;
-          let blob = await fetch(dataUrl).then(r => r.blob());
+          let blob = await fetch(dataUrl).then(r => r.blob());  // Turn the image into a Blob object
 
           let formData = new FormData();
-          formData.append("image", blob);
+          formData.append("image", blob);  // Append the image to the FormData object to be sent to backend as a POST request
 
-          fetch(`http://127.0.0.1:5000/predict/${fruit}`, {
+          fetch(`http://127.0.0.1:5000/predict/${fruit}`, {  // Send a POST request to the backend
             method: 'POST',
             body: formData
           })
@@ -89,7 +87,8 @@ function ScanPage() {
             }
             return response.json();
           })
-          .then(data => {
+          .then(data => {  // Save the response data in state so we can display it to the frontend
+            setResponseData(data);
             console.log('Success:', data);
           })
           .catch((error) => {
@@ -102,7 +101,7 @@ function ScanPage() {
     }
   };
 
-  useEffect(()=>{runCoco()},[]);
+  useEffect(()=>{runCoco()},[]);  // run the object detection model when the component first renders
 
   return (
     <div className="App">
@@ -145,14 +144,40 @@ function ScanPage() {
           position: "absolute",
           display: flexbox,
           zIndex: 10,
+          marginTop: "60%",
+          }}/>} {/* Display the image when it's available */}
+
+      {responseData && <div 
+        style={{position: "absolute",
+          display: flexbox,
+          zIndex: 10,
           marginLeft: "auto",
           marginRight: "auto",
-          marginTop: "60%",
+          marginTop: "40%",
           marginBottom: "0%",
           paddingTop: "0%",
           paddingLeft: "auto",
           paddingRight: "auto",
-          }}/>} {/* Display the image when it's available */}
+          color: "white",
+          }}>{responseData.result} 
+        </div>} {/* Display the response data when it's available */}
+
+      {responseData && <button 
+            style={{
+              position: "absolute",
+              display: flexbox,
+              zIndex: 10,
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: "80%",
+              marginBottom: "0%",
+              paddingLeft: "auto",
+              paddingRight: "auto",
+            }}
+            onClick={rescan}
+          >
+          Rescan
+        </button>} {/* Display the response data when it's available */}
       </header>
     </div>
   );
