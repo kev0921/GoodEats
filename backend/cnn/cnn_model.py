@@ -30,9 +30,12 @@ model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(300, 300, 3)
 model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.Conv2D(128, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
 model.add(Flatten())
+model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(2, activation='softmax'))
 
 print(model.summary())
@@ -75,9 +78,9 @@ history = model.fit(train_generator,
                     validation_data=test_generator,
                     validation_steps=validation_steps)
 
-model.save("cnn_model.h5")
+model.save("cnn_model2.h5")
 
 # Evaluate the model on the test data
 test_loss, test_acc = model.evaluate(test_generator, steps=validation_steps)
 
-print(f'Test accuracy: {test_acc}')   # current test_acc: 0.83203125
+print(f'Test accuracy: {test_acc}, Test loss: {test_loss}')   # Test accuracy: 0.9204282164573669, Test loss: 0.2173093855381012

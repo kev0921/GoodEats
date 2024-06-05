@@ -16,34 +16,58 @@ CORS(app)
 def peach_predict():
     if request.method == 'OPTIONS':
         return ('', 204)
-    print("Analyzing peach")
-    if (request.files['image']):
+    print(f"Analyzing peach")
+    if 'image' in request.files:
         image = request.files['image']
-        result = get_prediction(image)
-        print('Model classification: ' + result)
-        return jsonify({"result": result})
+        image_bytes = BytesIO(image.read())
+        try:
+            result = get_prediction(image_bytes)
+            print('Model classification: ' + result)
+            return jsonify({"result": result})
+        except Exception as e:
+            print("Error in get_prediction: ", str(e))
+            return jsonify({"error": str(e)}), 500
+    else:
+        return jsonify({"error": "No image provided"}), 400
+
 
 @app.route('/predict/pomegranate', methods=['POST', 'OPTIONS'])
 def pomegranate_predict():
     if request.method == 'OPTIONS':
         return ('', 204)
-    print("Analyzing pomegranate")
-    if (request.files['image']):
+    print(f"Analyzing pomegranate")
+    if 'image' in request.files:
         image = request.files['image']
-        result = get_prediction(image)
-        print('Model classification: ' + result)
-        return jsonify({"result": result})
+        image_bytes = BytesIO(image.read())
+        try:
+            result = get_prediction(image_bytes)
+            print('Model classification: ' + result)
+            return jsonify({"result": result})
+        except Exception as e:
+            print("Error in get_prediction: ", str(e))
+            return jsonify({"error": str(e)}), 500
+    else:
+        return jsonify({"error": "No image provided"}), 400
+
     
 @app.route('/predict/strawberry', methods=['POST', 'OPTIONS'])
 def strawberry_predict():
     if request.method == 'OPTIONS':
         return ('', 204)
-    print("Analyzing strawberry")
-    if (request.files['image']):
+    print(f"Analyzing strawberry")
+    if 'image' in request.files:
         image = request.files['image']
-        result = get_prediction(image)
-        print('Model classification: ' + result)
-        return jsonify({"result": result})
+        image_bytes = BytesIO(image.read())
+        try:
+            result = get_prediction(image_bytes)
+            print('Model classification: ' + result)
+            return jsonify({"result": result})
+        except Exception as e:
+            print("Error in get_prediction: ", str(e))
+            return jsonify({"error": str(e)}), 500
+    else:
+        return jsonify({"error": "No image provided"}), 400
+
 
 @app.route('/predict/apple', methods=['POST', 'OPTIONS'])
 def apple_predict():

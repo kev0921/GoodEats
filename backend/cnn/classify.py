@@ -3,7 +3,7 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img
 import numpy as np
 
 # Load the saved model
-model = load_model('/Users/kevinhu/Downloads/web-projects/SafeEats/backend/cnn/cnn_model.h5')
+model = load_model('/Users/kevinhu/Downloads/web-projects/SafeEats/backend/cnn/cnn_model2.h5')
 
 def get_prediction(image_path):
     # Load and preprocess the image
@@ -19,7 +19,7 @@ def get_prediction(image_path):
     predicted_class = np.argmax(prediction)
 
     # Assuming you have a list of class names in the order they were encoded
-    class_names = ['Fresh', 'Rotten']
+    class_names = ['Fresh', 'Stale']
 
     return class_names[predicted_class]
 
