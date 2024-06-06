@@ -105,5 +105,23 @@ def orange_predict():
     else:
         return jsonify({"error": "No image provided"}), 400
 
+@app.route('/predict/banana', methods=['POST', 'OPTIONS'])
+def banana_predict():
+    if request.method == 'OPTIONS':
+        return ('', 204)
+    print(f"Analyzing banana")
+    if 'image' in request.files:
+        image = request.files['image']
+        image_bytes = BytesIO(image.read())
+        try:
+            result = get_prediction(image_bytes)
+            print('Model classification: ' + result)
+            return jsonify({"result": result})
+        except Exception as e:
+            print("Error in get_prediction: ", str(e))
+            return jsonify({"error": str(e)}), 500
+    else:
+        return jsonify({"error": "No image provided"}), 400
+
 if __name__ == '__main__':
     app.run(debug=True)
