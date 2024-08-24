@@ -17,7 +17,7 @@ function HomePage() {
             <div>
               <div className="subtext">Scan your fruit to determine their freshness</div>
             </div>
-            <button type="link" onClick={handleOnSubmit} style={{marginTop: "2%"}}>
+            <button type="link" onClick={handleOnSubmit} style={{marginTop: "2%", background: "blue"}}>
               Click to start scanning
             </button>
           </div>

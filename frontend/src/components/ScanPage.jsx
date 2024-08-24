@@ -5,6 +5,7 @@ import Webcam from "react-webcam";
 import "./ScanPage.css";
 import { drawRect } from "../utilities/drawRect";
 import { flexbox } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function ScanPage() {
   console.log('ScanPage is rendering')
@@ -66,7 +67,10 @@ function ScanPage() {
 
         // Update drawing utility
         const [detectedClass, detectedImage] = drawRect(obj, ctx, video); // Pass video to drawRect and destructure the return value
-        if (detectedClass === 'peach' || detectedClass === 'pomegranate' || detectedClass === 'strawberry' || detectedClass === 'apple' || detectedClass === 'banana' || detectedClass === 'orange') {
+
+        const validFruits = ['peach', 'pomegranate', 'strawberry', 'apple', 'banana', 'orange'];
+
+        if (validFruits.includes(detectedClass)) {
           clearInterval(intervalId);  // Stops the interval running the object detection
           const dataUrl = detectedImage.toDataURL();  // Converts the image of the detected fruit to a data URL
           setDetectedImage(dataUrl); // Convert the canvas to a data URL and save it in state
@@ -102,9 +106,26 @@ function ScanPage() {
   };
 
   useEffect(()=>{runCoco()},[]);  // run the object detection model when the component first renders
+  
+  const navigate = useNavigate();
+  const handleOnSubmit = () => {
+    navigate("/");
+  };
 
   return (
-    <div className="App">
+    <div>
+        <button onClick={handleOnSubmit} style={{
+          position: "absolute",
+          top: "15%",
+          left: "42%",
+          display: flexbox,
+          zIndex: 10,
+          paddingLeft: "8%",
+          paddingRight: "8%",
+          backgroundColor: "red",
+        }}>
+        Exit
+      </button>
       <header className="App-header">
         <Webcam
           ref={webcamRef}
@@ -173,6 +194,7 @@ function ScanPage() {
               marginBottom: "0%",
               paddingLeft: "auto",
               paddingRight: "auto",
+              backgroundColor: "blue",
             }}
             onClick={rescan}
           >
