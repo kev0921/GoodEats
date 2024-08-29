@@ -1,0 +1,13 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+        "Name": "184952363101.dkr.ecr.ca-central-1.amazonaws.com/goodeats-backend",
+        "Update": "true"
+    },
+    "Ports": [
+        {
+            "ContainerPort": 8080,
+            "HostPort": 8080
+        }
+    ]
+}
