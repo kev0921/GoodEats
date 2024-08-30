@@ -1,0 +1,8 @@
+*.pyc
+__pycache__/
+*.log
+*.zip
+*.tar.gz
+*.venv/
+node_modules/
+images/

@@ -1,0 +1,29 @@
+# Exclude version control directories
+.git/
+.hg/
+.svn/
+
+# Exclude Python virtual environments
+.venv/
+env/
+venv/
+
+# Exclude node_modules
+node_modules/
+
+# Exclude log files
+*.log
+
+# Exclude markdown files
+*.md
+
+# Exclude OS-specific files
+.DS_Store
+Thumbs.db
+
+# Exclude other unnecessary files
+*.bak
+*.swp
+
+# Exclude images directory
+images/
